@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import bellSound from "./assets/Ascending-bell-tones-sound-effect/Ascending-bell-tones-sound-effect.mp3";
-import seedlingImage from './assets/seedling image.jpg';
+import seedlingImage from './assets/seedling-image.jpg';
+
 
 function App() {
 
