@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import bellSound from "./assets/Ascending-bell-tones-sound-effect/Ascending-bell-tones-sound-effect.mp3";
 import seedlingImage from './assets/seedling-image.jpg';
+import seedling from './assets/seedling.jpg';
+import tree from './assets/tree.png';
+import appletree from './assets/apple-tree.png';
 
 
 function App() {
 
-const [remainingTime, setRemainingTime] = useState(1500);
+const [remainingTime, setRemainingTime] = useState(60);
 
 const [inputClick, setInputClick] = useState(true);
 const [startClicked, setstartClicked] = useState(false);
@@ -16,9 +19,18 @@ const [second, setSecond] = useState(String(Math.floor(remainingTime%60)).padSta
 const intervalIdRef = useRef(null);
 
 const applyTime = () => {
-  const totalTime =parseInt(hour)*60*60+parseInt(minute)*60 + parseInt(second);
+  const totalTime = parseInt(minute)*60 + parseInt(second);
   setRemainingTime(totalTime);
   setInputClick(true);
+}
+
+const applyImage = () => {
+  const total = parseInt(minute)*60 + parseInt(second);
+  const progress = total === 0 ? 0 :( 1- remainingTime/total);
+  if(progress< 0.25) return seedling;
+  if(progress<0.5) return seedlingImage;
+  if(progress<0.75) return tree;
+  else return appletree;
 }
 
 const startTimer = () => {
@@ -51,16 +63,17 @@ const playSound = () => {
   audio.play();
 }
 
+
   return (
     <>
       <div className='main-container'>
-        <div>
-        <img className="seedling-image" src={seedlingImage} alt='tree image' height={300} width={300} />
+        <div className='seedling-container'>
+        <img className="seedling-image" src={applyImage()} alt='tree image' height={300} width={300} />
         </div>
         {
           inputClick ? (
              <h1 className='timer-display'>
-          <span onClick={() => setInputClick(false)}>{String(Math.floor((remainingTime%3600)/60)).padStart(2, "0")}</span>:
+          <span onClick={() => setInputClick(false)}>{String(Math.floor(remainingTime/60)).padStart(2, "0")}</span>:
           <span onClick={() => setInputClick(false)}>{String(Math.floor(remainingTime%60)).padStart(2, "0")}</span>
             </h1>
           ) :(
@@ -72,7 +85,7 @@ const playSound = () => {
           )
         } 
 
-       <p><span>
+       <p className='timer-button'><span>
         <button onClick={startTimer}
         style={{
           color: startClicked ? "white" : "black",
