@@ -15,17 +15,23 @@ const [inputClick, setInputClick] = useState(true);
 const [startClicked, setstartClicked] = useState(false);
 const [stopClicked, setstopClicked] = useState(false);
 const [minute, setMinute] = useState(String(Math.floor((remainingTime%3600)/60)).padStart(2, "0"));
-const [second, setSecond] = useState(String(Math.floor(remainingTime%60)).padStart(2, "0"));
+// const [second, setSecond] = useState(String(Math.floor(remainingTime%60)).padStart(2, "0"));
 const intervalIdRef = useRef(null);
 
 const applyTime = () => {
-  const totalTime = parseInt(minute)*60 + parseInt(second);
+    const totalTime = parseInt(minute)*60 ;
+  // const totalTime = parseInt(minute)*60 + parseInt(second);
   setRemainingTime(totalTime);
   setInputClick(true);
 }
 
+// useEffect(() => {
+//   const totalTime = parseInt(minute)*60 + parseInt(second);
+//   setRemainingTime(totalTime);
+// })
+
 const applyImage = () => {
-  const total = parseInt(minute)*60 + parseInt(second);
+  const total = parseInt(minute)*60 ;
   const progress = total === 0 ? 0 :( 1- remainingTime/total);
   if(progress< 0.25) return seedling;
   if(progress<0.5) return seedlingImage;
@@ -73,14 +79,15 @@ const playSound = () => {
         {
           inputClick ? (
              <h1 className='timer-display'>
-          <span onClick={() => setInputClick(false)}>{String(Math.floor(remainingTime/60)).padStart(2, "0")}</span>:
-          <span onClick={() => setInputClick(false)}>{String(Math.floor(remainingTime%60)).padStart(2, "0")}</span>
+          <span onClick={stopClicked ? (() => setInputClick(false)):(() => setInputClick(true))}>{String(Math.floor(remainingTime/60)).padStart(2, "0")}</span>:
+          <span onClick={stopClicked ? (() => setInputClick(false)):(() => setInputClick(true))}>{String(Math.floor(remainingTime%60)).padStart(2, "0")}</span>
             </h1>
-          ) :(
-            <div className='applied-timer-container'>
+          ) :
+          (
+            <div className='applied-timer-container' onBlur={applyTime}>
             <input type='number' value={minute} onChange={(e) => setMinute(e.target.value) }/>
-            <input type='number' value={second} onChange={(e) => setSecond(e.target.value) }/>
-            <button onClick={applyTime}>Done</button>
+            {/* <input type='number' value={second} onChange={(e) => setSecond(e.target.value) }/> */}
+            {/* <button onClick={applyTime}>Done</button> */}
             </div>
           )
         } 

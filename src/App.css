@@ -19,10 +19,16 @@ button{
 }
 
 input{
-  font-size: larger;
+  font-size:2em;
+  font-weight:bold;
   width: 60px;
   height: 26px;
   border: none;
+  background-color: transparent;
+  color: #f5f5f5;
+  margin-top: 20px;
+  outline: none;
+  padding: 8px;
 }
 
 .seedling-container{
